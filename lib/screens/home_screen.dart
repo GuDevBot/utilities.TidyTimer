@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (state is TaskLoaded) {
-            // Se não há tarefas, mostramos uma mensagem.
             if (state.tasks.isEmpty) {
               return const Center(
                 child: Text('Nenhuma tarefa ainda. Adicione uma!'),
@@ -48,15 +47,51 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: state.tasks.length,
               itemBuilder: (context, index) {
                 final task = state.tasks[index];
-                return ListTile(
-                  title: Text(task.name),
-                  subtitle: Text('Próxima vez: ${task.nextDueDate.toLocal()}'),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.check_circle_outline),
-                    onPressed: () {
-                      // Para chamar uma função do Cubit, usamos context.read()
-                      context.read<TaskCubit>().markTaskAsDone(task.id);
-                    },
+                return Dismissible(
+                  key: Key(task.id),
+                  onDismissed: (direction) {
+                    final cubit = context.read<TaskCubit>();
+                    cubit.deleteTask(task);
+
+                    // Mostra um snackbar para dar um feedback e a opção de desfazer (Undo)
+                    ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar() // Remove o snackbar anterior, se houver
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text('${task.name} deletado.'),
+                          duration: const Duration(seconds: 4),
+                          // Ação de desfazer
+                          action: SnackBarAction(
+                            label: 'DESFAZER',
+                            onPressed: () {
+                              cubit.undoDelete();
+                            },
+                          ),
+                        ),
+                      );
+                  },
+
+                  // 'background' que aparece por trás enquanto o usuário arrasta.
+                  background: Container(
+                    color: Colors.redAccent,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    alignment: Alignment.centerRight,
+                    child: const Icon(
+                      Icons.delete_forever,
+                      color: Colors.white,
+                    ),
+                  ),
+                  child: ListTile(
+                    title: Text(task.name),
+                    subtitle: Text(
+                      'Próxima vez: ${task.nextDueDate.toLocal().toString().substring(0, 10)}',
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.check_circle_outline),
+                      onPressed: () {
+                        context.read<TaskCubit>().markTaskAsDone(task.id);
+                      },
+                    ),
                   ),
                 );
               },

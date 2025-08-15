@@ -10,68 +10,96 @@
 
 */
 
+import 'package:items_list_timer/providers/task_state.dart';
+import 'package:items_list_timer/models/task_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'task_state.dart';
-import '../models/task_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-// Este Cubit vai gerenciar um estado do tipo 'TaskState'.
 class TaskCubit extends Cubit<TaskState> {
-  // Quando o Cubit é criado, seu estado inicial é 'TaskInitial'.
   TaskCubit() : super(TaskInitial());
 
-  // (Aqui viria a conexão com seu StorageService, por enquanto vamos simular)
-  final List<Task> _tasks = []; // Uma lista privada para simular o banco de dados
+  // Variável para nossa "caixa" (tabela) de tarefas
+  late Box<Task> _taskBox; 
 
-  // Método para carregar as tarefas
+  // Variáveis para armazenar a última tarefa deletada e sua posição na lista
+  int? _lastTaskDeletedIndex;
+  Task? _lastTaskDeleted;
+
+  Future<void> _initDb() async {
+    // Abre a caixa. Se não existir, ela é criada.
+    _taskBox = await Hive.openBox<Task>('tasks');
+  }
+
   Future<void> loadTasks() async {
     try {
-      // 1. Emite o estado de 'Carregando' para a UI mostrar um spinner.
       emit(TaskLoading());
-
-      // 2. Simula uma chamada ao banco de dados.
-      await Future.delayed(const Duration(seconds: 1)); 
-      // Em um app real: _tasks = await storageService.getTasks();
-
-      // 3. Emite o estado de 'Carregado' com a lista de tarefas.
-      emit(TaskLoaded(_tasks));
+      await _initDb(); // Garante que o DB está aberto
+      
+      // Carrega as tarefas do banco de dados e as converte para uma lista
+      final tasks = _taskBox.values.toList();
+      
+      emit(TaskLoaded(tasks));
     } catch (e) {
-      // 4. Se der erro, emite o estado de 'Erro'.
-      emit(TaskError("Não foi possível carregar as tarefas."));
+      emit(TaskError("Não foi possível carregar as tarefas do banco de dados."));
     }
   }
 
-  // Método para adicionar uma nova tarefa
+  Future<void> _updateDb(List<Task> tasks) async {
+    // Uma forma simples de salvar: limpa a caixa e salva a lista atualizada.
+    await _taskBox.clear();
+    // O Hive usa um mapa de Chave-Valor.
+    final Map<String, Task> taskMap = {for (var task in tasks) task.id: task};
+    await _taskBox.putAll(taskMap);
+  }
+
   Future<void> addTask(Task task) async {
-    // A lógica é a mesma: pega o estado atual, modifica e emite um novo.
     if (state is TaskLoaded) {
-      final currentTasks = (state as TaskLoaded).tasks;
-      final updatedTasks = List<Task>.from(currentTasks)..add(task);
-      // Em um app real: await storageService.saveTasks(updatedTasks);
+      final updatedTasks = List<Task>.from((state as TaskLoaded).tasks)..add(task);
       emit(TaskLoaded(updatedTasks));
+      await _updateDb(updatedTasks); // Salva no DB
     }
   }
   
-  // Método para marcar uma tarefa como feita
   Future<void> markTaskAsDone(String taskId) async {
     if (state is TaskLoaded) {
-      final List<Task> currentTasks = (state as TaskLoaded).tasks;
-      
+      final currentTasks = (state as TaskLoaded).tasks;
       final updatedTasks = currentTasks.map((task) {
         if (task.id == taskId) {
-          // Cria uma nova instância da tarefa com a data atualizada
           return Task(
             id: task.id,
             name: task.name,
             category: task.category,
             frequencyInDays: task.frequencyInDays,
-            lastDone: DateTime.now(), // A MÁGICA ACONTECE AQUI!
+            lastDone: DateTime.now(),
           );
         }
         return task;
       }).toList();
-      
       emit(TaskLoaded(updatedTasks));
-      // Em um app real: await storageService.saveTasks(updatedTasks);
+      await _updateDb(updatedTasks); // Salva no DB
+    }
+  }
+
+  Future<void> deleteTask(Task task) async {
+    if (state is TaskLoaded) {
+      final currentTasks = List<Task>.from((state as TaskLoaded).tasks);
+      _lastTaskDeleted = task;
+      _lastTaskDeletedIndex = currentTasks.indexOf(task);
+      currentTasks.remove(task);
+      emit(TaskLoaded(currentTasks));
+      await _updateDb(currentTasks); // Salva no DB
+    }
+  }
+
+  Future<void> undoDelete() async {
+    if (_lastTaskDeleted == null || _lastTaskDeletedIndex == null) return;
+    if (state is TaskLoaded) {
+      final currentTasks = List<Task>.from((state as TaskLoaded).tasks);
+      currentTasks.insert(_lastTaskDeletedIndex!, _lastTaskDeleted!);
+      emit(TaskLoaded(currentTasks));
+      await _updateDb(currentTasks); // Salva no DB
+      _lastTaskDeleted = null;
+      _lastTaskDeletedIndex = null;
     }
   }
 }

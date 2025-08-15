@@ -1,11 +1,30 @@
-class Task {
-  String id;          // Um ID único para cada tarefa
-  String name;        // Ex: "Lavar o banheiro"
-  String category;    // Ex: "Banheiro", "Cozinha" (para filtros futuros)
-  int frequencyInDays; // Com que frequência precisa ser refeita (ex: 7, 30)
-  DateTime lastDone;  // A última vez que foi concluída
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 
-  Task({
+// Esta linha diz ao gerador de código qual o nome do arquivo a ser criado.
+part 'task_model.g.dart';
+
+// Anotação @HiveType. O typeId deve ser único para cada modelo.
+@HiveType(typeId: 0)
+class Task extends Equatable {
+  // @HiveField para cada propriedade, com um índice único.
+  // IMPORTANTE: Uma vez definidos, NUNCA mude os índices.
+  @HiveField(0)
+  final String id;
+  
+  @HiveField(1)
+  final String name;
+  
+  @HiveField(2)
+  final String category;
+  
+  @HiveField(3)
+  final int frequencyInDays;
+  
+  @HiveField(4)
+  final DateTime lastDone;
+
+  const Task({
     required this.id,
     required this.name,
     required this.category,
@@ -13,8 +32,10 @@ class Task {
     required this.lastDone,
   });
 
-  // Uma propriedade "calculada" para saber quando é a próxima vez
   DateTime get nextDueDate {
     return lastDone.add(Duration(days: frequencyInDays));
   }
+  
+  @override
+  List<Object?> get props => [id, name, category, frequencyInDays, lastDone];
 }
