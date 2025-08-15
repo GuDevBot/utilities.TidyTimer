@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => TaskCubit()..loadTasks(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Items List Timer',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

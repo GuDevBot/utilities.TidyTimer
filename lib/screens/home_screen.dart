@@ -10,10 +10,11 @@
 
 */
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_list_timer/widgets/countdown_timer.dart';
 import 'package:items_list_timer/providers/task_cubit.dart';
 import 'package:items_list_timer/providers/task_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'add_edit_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -83,9 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: ListTile(
                     title: Text(task.name),
-                    subtitle: Text(
-                      'Próxima vez: ${task.nextDueDate.toLocal().toString().substring(0, 10)}',
-                    ),
+                    subtitle: CountdownTimer(targetDate: task.nextDueDate),
                     trailing: IconButton(
                       icon: const Icon(Icons.check_circle_outline),
                       onPressed: () {
