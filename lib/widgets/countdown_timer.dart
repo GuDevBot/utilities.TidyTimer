@@ -17,24 +17,21 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   void initState() {
     super.initState();
-    // Inicia o cálculo do tempo restante
-    _updateTimeRemaining();
-    
-    // Cria um timer que vai rodar a cada minuto para atualizar a UI
+
     _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateTimeRemaining();
     });
+
+    _updateTimeRemaining();
   }
 
   void _updateTimeRemaining() {
     final now = DateTime.now();
-    // Garante que a contagem pare quando o tempo acabar
     if (widget.targetDate.isAfter(now)) {
       setState(() {
         _timeRemaining = widget.targetDate.difference(now);
       });
     } else {
-      // Se a data já passou, zera a duração e para o timer
       setState(() {
         _timeRemaining = Duration.zero;
       });
@@ -42,7 +39,6 @@ class _CountdownTimerState extends State<CountdownTimer> {
     }
   }
 
-  // É crucial cancelar o timer para evitar vazamentos de memória
   @override
   void dispose() {
     _timer.cancel();
@@ -65,8 +61,6 @@ class _CountdownTimerState extends State<CountdownTimer> {
     if (hours > 0) {
       result += '$hours h ';
     }
-    // Mostra os minutos apenas se o tempo total for menor que 1 dia
-    // para não poluir a tela.
     if (days == 0 && minutes > 0) {
       result += '$minutes min';
     }
@@ -77,8 +71,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     final formattedTime = _formatDuration(_timeRemaining);
-    
-    // Adiciona uma cor para destacar tarefas atrasadas ou urgentes
+
     Color textColor = Colors.grey.shade600;
     if (_timeRemaining.inSeconds <= 0) {
       textColor = Colors.red.shade700;
@@ -90,7 +83,9 @@ class _CountdownTimerState extends State<CountdownTimer> {
       formattedTime,
       style: TextStyle(
         color: textColor,
-        fontWeight: _timeRemaining.inSeconds <= 0 ? FontWeight.bold : FontWeight.normal,
+        fontWeight: _timeRemaining.inSeconds <= 0
+            ? FontWeight.bold
+            : FontWeight.normal,
       ),
     );
   }

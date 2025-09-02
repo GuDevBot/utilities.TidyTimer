@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "io.github.GuDevBot" "\0"
-            VALUE "FileDescription", "items_list_timer" "\0"
+            VALUE "FileDescription", "TidyTimer" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "items_list_timer" "\0"
+            VALUE "InternalName", "TidyTimer" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 io.github.GuDevBot. All rights reserved." "\0"
-            VALUE "OriginalFilename", "items_list_timer.exe" "\0"
-            VALUE "ProductName", "items_list_timer" "\0"
+            VALUE "OriginalFilename", "TidyTimer.exe" "\0"
+            VALUE "ProductName", "TidyTimer" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,12 +1,7 @@
 # ✨ TidyTimer - Items List Timer
 
-![Project Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Flutter Version](https://img.shields.io/badge/flutter-3.x-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-
 Um aplicativo simples e elegante construído com Flutter para ajudar você a nunca mais se esquecer das tarefas domésticas recorrentes.
 
-![Prévia do App](https://i.imgur.com/your-app-preview.gif) 
 *Substitua por um screenshot ou GIF do seu app.*
 
 ---
@@ -106,12 +101,6 @@ Este projeto tem muito potencial para crescer! Algumas ideias para o futuro:
 * [ ] **Tela de Estatísticas** para gamificar a limpeza.
 * [ ] **Edição de Tarefas** já existentes.
 * [ ] **Sincronização na Nuvem** (Firebase/Supabase) para backup e uso em múltiplos dispositivos.
-
----
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
 

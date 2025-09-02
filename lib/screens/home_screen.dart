@@ -10,12 +10,12 @@
 
 */
 
-import 'package:items_list_timer/widgets/countdown_timer.dart';
-import 'package:items_list_timer/providers/task_cubit.dart';
-import 'package:items_list_timer/providers/task_state.dart';
+import 'package:tidytimer/widgets/countdown_timer.dart';
+import 'package:tidytimer/providers/task_cubit.dart';
+import 'package:tidytimer/providers/task_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'add_edit_task_screen.dart';
+import 'task_form_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,21 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Minhas Tarefas')),
-      // O BlocBuilder é o widget que "ouve" o Cubit e se reconstrói.
       body: BlocBuilder<TaskCubit, TaskState>(
         builder: (context, state) {
-          // Agora, dependendo do estado, mostramos uma coisa diferente.
           if (state is TaskLoading || state is TaskInitial) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (state is TaskLoaded) {
+          if (state is! TaskLoaded) {}
+          else {
             if (state.tasks.isEmpty) {
               return const Center(
                 child: Text('Nenhuma tarefa ainda. Adicione uma!'),
               );
             }
-            // Se há tarefas, mostramos a lista.
+            // If we reach here, we have tasks to show. 
             return ListView.builder(
               itemCount: state.tasks.length,
               itemBuilder: (context, index) {
@@ -53,15 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   onDismissed: (direction) {
                     final cubit = context.read<TaskCubit>();
                     cubit.deleteTask(task);
-
-                    // Mostra um snackbar para dar um feedback e a opção de desfazer (Undo)
                     ScaffoldMessenger.of(context)
-                      ..removeCurrentSnackBar() // Remove o snackbar anterior, se houver
+                      ..removeCurrentSnackBar()
                       ..showSnackBar(
                         SnackBar(
                           content: Text('${task.name} deletado.'),
                           duration: const Duration(seconds: 4),
-                          // Ação de desfazer
                           action: SnackBarAction(
                             label: 'DESFAZER',
                             onPressed: () {
@@ -71,8 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                   },
-
-                  // 'background' que aparece por trás enquanto o usuário arrasta.
                   background: Container(
                     color: Colors.redAccent,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -100,14 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is TaskError) {
             return Center(child: Text(state.message));
           }
-
-          // Estado padrão, caso algo inesperado aconteça.
-          return const Center(child: Text('Algo deu errado.'));
+          return const Center(child: Text('Something went wrong!'));
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Quando o botão "+" é pressionado, vamos para a tela de adicionar/editar tarefa.
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddEditTaskScreen()),

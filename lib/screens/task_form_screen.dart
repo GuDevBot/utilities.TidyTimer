@@ -1,19 +1,10 @@
-/*
-
-  A simple form with spaces for the task name, frequency, category
-
-  Save button
-
-*/
-
-// Para gerar IDs únicos
-import 'package:items_list_timer/providers/task_cubit.dart'; 
-import 'package:items_list_timer/models/task_model.dart';
+import 'package:tidytimer/providers/task_cubit.dart'; 
+import 'package:tidytimer/models/task_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:uuid/uuid.dart';
 
-// 1. Transformamos em um StatefulWidget
+var uuid = const Uuid();
 class AddEditTaskScreen extends StatefulWidget {
   const AddEditTaskScreen({super.key});
 
@@ -21,14 +12,13 @@ class AddEditTaskScreen extends StatefulWidget {
   State<AddEditTaskScreen> createState() => _AddEditTaskScreenState();
 }
 
-// 2. Esta é a classe de "Estado" que guarda as variáveis do formulário
 class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
-  // Variáveis para guardar os dados do formulário
+  // Variables to hold form data
   final _nameController = TextEditingController();
   final _categoryController = TextEditingController();
-  double _frequencyInDays = 7.0; // Valor inicial do slider (7 dias)
+  double _frequencyInDays = 7.0;
 
-  // É importante limpar os controllers quando o widget é descartado
+  // Important to dispose controllers to free resources
   @override
   void dispose() {
     _nameController.dispose();
@@ -45,7 +35,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     }
 
     final newTask = Task(
-      id: DateTime.now().millisecondsSinceEpoch.toString() + Random().nextInt(1000).toString(),
+      id: uuid.v4(),
       name: _nameController.text,
       category: _categoryController.text.isNotEmpty ? _categoryController.text : 'Geral',
       frequencyInDays: _frequencyInDays.toInt(), // Convertemos o double para inteiro

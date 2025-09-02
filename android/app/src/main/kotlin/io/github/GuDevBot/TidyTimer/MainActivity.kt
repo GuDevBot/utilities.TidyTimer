@@ -1,4 +1,4 @@
-package io.github.GuDevBot.items_list_timer
+package io.github.GuDevBot.TidyTimer
 
 import io.flutter.embedding.android.FlutterActivity
 
