@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {
   final DateTime targetDate;
+  final bool showSeconds;
 
-  const CountdownTimer({super.key, required this.targetDate});
+  const CountdownTimer({
+    super.key,
+    required this.targetDate,
+    this.showSeconds = false,
+  });
 
   @override
   State<CountdownTimer> createState() => _CountdownTimerState();
@@ -17,12 +22,13 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   void initState() {
     super.initState();
+    _updateTimeRemaining();
 
-    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: widget.showSeconds ? 1 : 60), (
+      timer,
+    ) {
       _updateTimeRemaining();
     });
-
-    _updateTimeRemaining();
   }
 
   void _updateTimeRemaining() {
@@ -39,6 +45,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
     }
   }
 
+  // Its important to cancel the timer to avoid memory leaks
   @override
   void dispose() {
     _timer.cancel();
@@ -53,6 +60,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
     final days = duration.inDays;
     final hours = duration.inHours % 24;
     final minutes = duration.inMinutes % 60;
+    final seconds = duration.inSeconds % 60;
 
     String result = '';
     if (days > 0) {
@@ -61,24 +69,25 @@ class _CountdownTimerState extends State<CountdownTimer> {
     if (hours > 0) {
       result += '$hours h ';
     }
-    if (days == 0 && minutes > 0) {
-      result += '$minutes min';
+    if (minutes > 0) {
+      result += '$minutes min ';
+    }
+    if (widget.showSeconds && days >= 0 && hours >= 0) {
+      result += '$seconds seg';
     }
 
-    return result.isEmpty ? "Menos de 1 min" : result.trim();
+    return result.trim();
   }
 
   @override
   Widget build(BuildContext context) {
     final formattedTime = _formatDuration(_timeRemaining);
-
     Color textColor = Colors.grey.shade600;
     if (_timeRemaining.inSeconds <= 0) {
       textColor = Colors.red.shade700;
     } else if (_timeRemaining.inDays < 1) {
       textColor = Colors.orange.shade800;
     }
-
     return Text(
       formattedTime,
       style: TextStyle(

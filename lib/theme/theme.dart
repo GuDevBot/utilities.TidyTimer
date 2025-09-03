@@ -1,64 +1,71 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const Color _primaryColor = Color(0xFF26A69A); // Teal 400
-  static const Color _accentColor = Color(0xFFFFC107);  // Amber 400
-  
-  static final ThemeData lightTheme = ThemeData.from(
-    colorScheme: ColorScheme(
-      brightness: Brightness.light,
-      
-      primary: _primaryColor,
-      onPrimary: Colors.white,
+  static const Color _primaryColor = Color(0xFF2E63A8);
+  static const Color _secondaryColor = Color(0xFF79D9AC);
+  static const Color _lightScaffoldBackground = Color(0xFFC5E2EF);
+  static const Color _darkScaffoldBackground = Color(0xFF1F2F3D);
+  static const Color _darkSurface = Color(0xFF263D52);
 
-      secondary: _accentColor,
-      onSecondary: Colors.black,
+  // Light Theme
+  static final ThemeData lightTheme =
+      ThemeData.from(
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
 
-      surface: Colors.white,
-      onSurface: Colors.black87,
-      
-      error: Colors.redAccent,
-      onError: Colors.white,
-    ),
-  ).copyWith(
-    scaffoldBackgroundColor: const Color(0xFFF5F5F5), 
-    
-    appBarTheme: const AppBarTheme(
-      elevation: 0,
-      centerTitle: true,
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: _primaryColor,
-      foregroundColor: Colors.white,
-    ),
-  );
+          primary: _primaryColor,
+          onPrimary: Colors.white,
 
-  static final ThemeData darkTheme = ThemeData.from(
-    colorScheme: ColorScheme(
-      brightness: Brightness.dark,
-      
-      primary: _primaryColor,
-      onPrimary: Colors.white,
+          secondary: _secondaryColor,
+          onSecondary: Colors.white,
 
-      secondary: _accentColor,
-      onSecondary: Colors.black,
+          surface: Colors.white,
+          onSurface: Colors.black87,
 
-      surface: const Color(0xFF1E1E1E),
-      onSurface: Colors.white70,
-      
-      error: Colors.redAccent,
-      onError: Colors.white,
-    ),
-  ).copyWith(
-    scaffoldBackgroundColor: const Color(0xFF121212),
-    
-    appBarTheme: const AppBarTheme(
-      elevation: 0,
-      centerTitle: true,
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: _primaryColor,
-      foregroundColor: Colors.white,
-    ),
-  );
+          error: Colors.redAccent,
+          onError: Colors.white,
+        ),
+      ).copyWith(
+        scaffoldBackgroundColor: _lightScaffoldBackground,
+
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: _primaryColor,
+          foregroundColor: Colors.white,
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: _secondaryColor,
+          foregroundColor: Colors.white,
+        ),
+      );
+
+  // Dark Theme
+  static final ThemeData darkTheme =
+      ThemeData.from(
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+
+          primary: _primaryColor,
+          onPrimary: Colors.white,
+
+          secondary: _secondaryColor,
+          onSecondary: Colors.white,
+
+          surface: _darkSurface,
+          onSurface: Colors.white70,
+
+          error: Colors.redAccent,
+          onError: Colors.white,
+        ),
+      ).copyWith(
+        scaffoldBackgroundColor: _darkScaffoldBackground,
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: _darkSurface,
+          foregroundColor: Colors.white,
+        ),
+        sliderTheme: const SliderThemeData(activeTrackColor: _secondaryColor),
+      );
 }

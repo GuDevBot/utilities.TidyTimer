@@ -1,4 +1,5 @@
 import 'package:tidytimer/providers/task_cubit.dart';
+import 'package:tidytimer/providers/theme_cubit.dart';
 import 'package:tidytimer/screens/home_screen.dart';
 import 'package:tidytimer/models/task_model.dart';
 import 'package:tidytimer/theme/theme.dart';
@@ -19,15 +20,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TaskCubit()..initialize(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'TidyTimer',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        home: const HomeScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => TaskCubit()..initialize()),
+        BlocProvider(create: (context) => ThemeCubit()),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'TidyTimer',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeMode,
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }

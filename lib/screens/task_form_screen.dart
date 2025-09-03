@@ -1,10 +1,11 @@
-import 'package:tidytimer/providers/task_cubit.dart'; 
+import 'package:tidytimer/providers/task_cubit.dart';
 import 'package:tidytimer/models/task_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-var uuid = const Uuid();
+Uuid uuid = const Uuid();
+
 class AddEditTaskScreen extends StatefulWidget {
   const AddEditTaskScreen({super.key});
 
@@ -37,12 +38,13 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     final newTask = Task(
       id: uuid.v4(),
       name: _nameController.text,
-      category: _categoryController.text.isNotEmpty ? _categoryController.text : 'Geral',
-      frequencyInDays: _frequencyInDays.toInt(), // Convertemos o double para inteiro
+      category: _categoryController.text.isNotEmpty
+          ? _categoryController.text
+          : 'Geral',
+      frequencyInDays: _frequencyInDays.toInt(),
       lastDone: DateTime.now(),
     );
 
-    // Usamos o Cubit para adicionar a nova tarefa
     context.read<TaskCubit>().addTask(newTask);
 
     Navigator.of(context).pop();
@@ -51,9 +53,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova Tarefa'),
-      ),
+      appBar: AppBar(title: const Text('Nova Tarefa')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -99,6 +99,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               onPressed: _saveTask,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: ColorScheme.of(context).primary,
+                foregroundColor: ColorScheme.of(context).onPrimary,
               ),
               child: const Text('Salvar Tarefa'),
             ),
