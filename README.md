@@ -1,107 +1,107 @@
 # ✨ TidyTimer - Items List Timer
 
-Um aplicativo simples e elegante construído com Flutter para ajudar você a nunca mais se esquecer das tarefas domésticas recorrentes.
+A simple and elegant app built with Flutter to help you never again forget recurring household chores.
 
-*Substitua por um screenshot ou GIF do seu app.*
-
----
-
-## 🧹 Sobre o Projeto
-
-Você já se perguntou "Qual foi a última vez que eu limpei o ar-condicionado?" ou "Já está na hora de lavar as cortinas de novo?". O **TidyTimer** nasceu para resolver exatamente esse problema.
-
-Este aplicativo permite que você cadastre tarefas domésticas, defina com que frequência elas precisam ser feitas e, a partir daí, ele gerencia um timer em contagem regressiva para cada uma. Com uma interface limpa e focada, você sempre saberá qual é a próxima tarefa que precisa da sua atenção.
-
-Este projeto foi construído como um exercício prático, explorando conceitos modernos de desenvolvimento Flutter, desde o gerenciamento de estado com Cubit até a persistência de dados com um banco de dados local.
+*Replace with a screenshot or GIF of your app.*
 
 ---
 
-## 🚀 Funcionalidades Principais
+## 🧹 About the Project
 
-* **Adicionar Tarefas:** Crie novas tarefas com nome, categoria e frequência de repetição.
-* **Contagem Regressiva Automática:** Cada tarefa exibe um timer "vivo" (ex: `12d 8h 3min`) para o próximo vencimento.
-* **Feedback Visual:** As tarefas mudam de cor para indicar status de urgência (laranja) ou atraso (vermelho).
-* **Marcar como Concluído:** Ao concluir uma tarefa, o timer é automaticamente reiniciado com base na frequência definida.
-* **Deslizar para Deletar:** Gerencie sua lista de forma rápida e intuitiva.
-* **Desfazer Exclusão:** Deletou uma tarefa por engano? Um clique e ela está de volta!
-* **Persistência Local:** Suas tarefas são salvas no seu dispositivo. Elas estarão lá quando você fechar e abrir o app novamente.
-* **Suporte a Tema Escuro:** Interface adaptada para modos claro e escuro.
+Have you ever asked yourself, "When was the last time I cleaned the air conditioner?" or "Is it time to wash the curtains again?". **TidyTimer** was born to solve exactly this problem.
+
+This app allows you to register household chores, set how often they need to be done, and from there, it manages a countdown timer for each one. With a clean and focused interface, you'll always know which task needs your attention next.
+
+This project was built as a practical exercise, exploring modern Flutter development concepts, from state management with Cubit to data persistence with a local database.
 
 ---
 
-## 🔧 Tecnologias Utilizadas
+## 🚀 Key Features
+
+* **Add Tasks:** Create new tasks with a name, category, and repetition frequency.
+* **Automatic Countdown:** Each task displays a "live" timer (e.g., `12d 8h 3min`) for the next due date.
+* **Visual Feedback:** Tasks change color to indicate urgency (orange) or overdue status (red).
+* **Mark as Done:** When you complete a task, the timer is automatically reset based on the defined frequency.
+* **Swipe to Delete:** Manage your list quickly and intuitively.
+* **Undo Delete:** Deleted a task by mistake? One click and it's back!
+* **Local Persistence:** Your tasks are saved on your device. They'll be there when you close and reopen the app.
+* **Dark Theme Support:** The interface is adapted for light and dark modes.
+
+---
+
+## 🔧 Tech Stack
 
 * **Framework:** [Flutter](https://flutter.dev/)
-* **Linguagem:** [Dart](https://dart.dev/)
-* **Gerenciamento de Estado:** [flutter_bloc (Cubit)](https://bloclibrary.dev/)
-* **Banco de Dados:** [Hive](https://hivedb.dev/) (Banco de dados NoSQL rápido e nativo em Dart)
-* **Comparação de Objetos:** [equatable](https://pub.dev/packages/equatable)
-* **Dependências Auxiliares:**
-    * `path_provider`: Para encontrar o caminho de armazenamento no dispositivo.
-    * `build_runner` / `hive_generator`: Para geração de código automática.
+* **Language:** [Dart](https://dart.dev/)
+* **State Management:** [flutter_bloc (Cubit)](https://bloclibrary.dev/)
+* **Database:** [Hive](https://hivedb.dev/) (A fast, native NoSQL database in Dart)
+* **Object Comparison:** [equatable](https://pub.dev/packages/equatable)
+* **Helper Dependencies:**
+    * `path_provider`: To find the storage path on the device.
+    * `build_runner` / `hive_generator`: For automatic code generation.
 
 ---
 
-## ⚡ Como Executar o Projeto
+## ⚡ How to Run the Project
 
-Siga os passos abaixo para rodar o projeto localmente.
+Follow the steps below to run the project locally.
 
-### Pré-requisitos
+### Prerequisites
 
-* Você precisa ter o [Flutter SDK](https://flutter.dev/docs/get-started/install) instalado.
-* Um emulador Android/iOS ou um dispositivo físico.
+* You need to have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed.
+* An Android/iOS emulator or a physical device.
 
-### Passos
+### Steps
 
-1.  **Clone o repositório:**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-    cd seu-repositorio
+    git clone [https://github.com/your-username/your-repository.git](https://github.com/GuDevBot/utilities.TidyTimer.git)
+    cd TidyTimer
     ```
 
-2.  **Instale as dependências:**
+2.  **Install dependencies:**
     ```bash
     flutter pub get
     ```
 
-3.  **Gere os arquivos do Hive (passo crucial):**
+3.  **Generate Hive files (crucial step):**
     ```bash
     flutter pub run build_runner build --delete-conflicting-outputs
     ```
 
-4.  **Execute o aplicativo:**
+4.  **Run the app:**
     ```bash
     flutter run
     ```
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
-O projeto segue uma estrutura de pastas limpa para promover a separação de responsabilidades:
+The project follows a clean folder structure to promote separation of concerns:
 
 ```
 lib/
-|-- cubits/         # Lógica de negócio e gerenciamento de estado (TaskCubit)
-|-- models/         # Classes de modelo de dados (Task)
-|-- screens/        # Widgets que representam as telas do app
-|-- theme/          # Configuração de tema (cores, fontes)
-|-- widgets/        # Widgets reutilizáveis (ex: CountdownTimer)
-|-- main.dart       # Ponto de entrada da aplicação
+|-- cubits/         # Business logic and state management (TaskCubit)
+|-- models/         # Data model classes (Task)
+|-- screens/        # Widgets that represent the app's screens
+|-- theme/          # Theme settings (colors, fonts)
+|-- widgets/        # Reusable widgets (ex: CountdownTimer)
+|-- main.dart       # Application entry point
 ```
 
 ---
 
-## 💡 Melhorias Futuras
+## 💡 Future Improvements
 
-Este projeto tem muito potencial para crescer! Algumas ideias para o futuro:
+This project has a lot of potential for growth! Some ideas for the future:
 
-* [ ] **Notificações Push** para avisar sobre tarefas vencendo.
-* [ ] **Categorias e Filtros** para organizar melhor as tarefas.
-* [ ] **Tela de Estatísticas** para gamificar a limpeza.
-* [ ] **Edição de Tarefas** já existentes.
-* [ ] **Sincronização na Nuvem** (Firebase/Supabase) para backup e uso em múltiplos dispositivos.
+* [ ] **Push Notifications** to notify about due tasks.
+* [ ] **Categories and Filters** to better organize tasks.
+* [ ] **Statistics Screen** to gamify cleaning.
+* [ ] **Task Editing** already existing.
+* [ ] **Cloud Synchronization** (Firebase/Supabase) for backup and use on multiple devices.
 
 ---
 
-Feito com Flutter.
+Made with Flutter.
