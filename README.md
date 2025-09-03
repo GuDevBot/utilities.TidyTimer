@@ -55,7 +55,7 @@ Follow the steps below to run the project locally.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/your-repository.git](https://github.com/GuDevBot/utilities.TidyTimer.git)
+    git clone https://github.com/GuDevBot/utilities.TidyTimer.git
     cd TidyTimer
     ```
 
