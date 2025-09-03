@@ -84,9 +84,9 @@ The project follows a clean folder structure to promote separation of concerns:
 lib/
 |-- cubits/         # Business logic and state management (TaskCubit)
 |-- models/         # Data model classes (Task)
-|-- screens/        # Widgets that represent the app's screens
-|-- theme/          # Theme settings (colors, fonts)
-|-- widgets/        # Reusable widgets (ex: CountdownTimer)
+|-- screens/        # Widgets representing the app screens
+|-- theme/          # Theme configuration (colors, fonts)
+|-- widgets/        # Reusable widgets (e.g., CountdownTimer)
 |-- main.dart       # Application entry point
 ```
 
@@ -94,13 +94,13 @@ lib/
 
 ## 💡 Future Improvements
 
-This project has a lot of potential for growth! Some ideas for the future:
+This project has a lot of potential to grow! Some ideas for the future:
 
-* [ ] **Push Notifications** to notify about due tasks.
+* [ ] **Push Notifications** to warn about due tasks.
 * [ ] **Categories and Filters** to better organize tasks.
 * [ ] **Statistics Screen** to gamify cleaning.
-* [ ] **Task Editing** already existing.
-* [ ] **Cloud Synchronization** (Firebase/Supabase) for backup and use on multiple devices.
+* [ ] **Editing** existing tasks.
+* [ ] **Cloud Sync** (Firebase/Supabase) for backup and multi-device use.
 
 ---
 
