@@ -30,7 +30,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   void _saveTask() {
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('O nome da tarefa não pode estar vazio!')),
+        const SnackBar(content: Text('The task name cannot be empty!')),
       );
       return;
     }
@@ -53,7 +53,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Nova Tarefa')),
+      appBar: AppBar(title: const Text('Task Name')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -61,9 +61,9 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nome da Tarefa',
-                hintText: 'Ex: Limpar o fogão',
+              decoration: InputDecoration(
+                labelText: 'Task Name',
+                hintText: 'Ex: Clean the stove',
                 border: OutlineInputBorder(),
               ),
               autofocus: true,
@@ -71,15 +71,15 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
             const SizedBox(height: 16),
             TextField(
               controller: _categoryController,
-              decoration: const InputDecoration(
-                labelText: 'Categoria (Opcional)',
-                hintText: 'Ex: Cozinha',
+              decoration: InputDecoration(
+                labelText: 'Category (Optional)',
+                hintText: 'Ex: Kitchen',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
             Text(
-              'Refazer a cada: ${_frequencyInDays.toInt()} dias',
+              'Redo every: ${_frequencyInDays.toInt()} days',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Slider(
@@ -87,7 +87,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               min: 1,
               max: 90,
               divisions: 89,
-              label: '${_frequencyInDays.toInt()} dias',
+              label: '${_frequencyInDays.toInt()} days',
               onChanged: (newValue) {
                 setState(() {
                   _frequencyInDays = newValue;
@@ -99,10 +99,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               onPressed: _saveTask,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: ColorScheme.of(context).primary,
-                foregroundColor: ColorScheme.of(context).onPrimary,
               ),
-              child: const Text('Salvar Tarefa'),
+              child: const Text('Save Task'),
             ),
           ],
         ),

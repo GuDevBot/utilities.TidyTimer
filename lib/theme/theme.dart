@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const Color _primaryColor = Color(0xFF2E63A8);
   static const Color _secondaryColor = Color(0xFF79D9AC);
+  static const Color _secondaryColorBold = Color(0xFF3CCB87);
   static const Color _lightScaffoldBackground = Color(0xFFC5E2EF);
   static const Color _darkScaffoldBackground = Color(0xFF1F2F3D);
   static const Color _darkSurface = Color(0xFF263D52);
@@ -27,17 +28,27 @@ class AppTheme {
         ),
       ).copyWith(
         scaffoldBackgroundColor: _lightScaffoldBackground,
-
         appBarTheme: const AppBarTheme(
           elevation: 0,
           centerTitle: true,
           backgroundColor: _primaryColor,
           foregroundColor: Colors.white,
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _secondaryColor,
+            foregroundColor: Colors.white,
+          ),
+        ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: _secondaryColor,
           foregroundColor: Colors.white,
         ),
+        sliderTheme: const SliderThemeData(
+          activeTrackColor: _secondaryColor,
+          thumbColor: _secondaryColor,
+        ),
+        listTileTheme: ListTileThemeData(iconColor: _secondaryColorBold),
       );
 
   // Dark Theme
@@ -66,6 +77,19 @@ class AppTheme {
           backgroundColor: _darkSurface,
           foregroundColor: Colors.white,
         ),
-        sliderTheme: const SliderThemeData(activeTrackColor: _secondaryColor),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _primaryColor,
+            foregroundColor: _secondaryColorBold,
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          foregroundColor: _secondaryColorBold,
+        ),
+        sliderTheme: const SliderThemeData(
+          activeTrackColor: _primaryColor,
+          thumbColor: _primaryColor,
+        ),
+        listTileTheme: ListTileThemeData(iconColor: _secondaryColor),
       );
 }
