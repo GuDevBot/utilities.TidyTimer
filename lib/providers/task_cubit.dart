@@ -17,13 +17,17 @@ class TaskCubit extends Cubit<TaskState> {
     await loadTasks();
   }
 
+  Future<void> _emitTasksFromBox() async {
+    final tasks = _taskBox.values.toList();
+    tasks.sort((a, b) => a.nextDueDate.compareTo(b.nextDueDate));
+    emit(TaskLoaded(tasks));
+  }
+
   Future<void> loadTasks() async {
     if (!_initialized) return;
     try {
       emit(TaskLoading());
-      final tasks = _taskBox.values.toList();
-      tasks.sort((a, b) => a.nextDueDate.compareTo(b.nextDueDate));
-      emit(TaskLoaded(tasks));
+      await _emitTasksFromBox();
     } catch (e) {
       emit(
         TaskError("Não foi possível carregar as tarefas do banco de dados."),
@@ -34,27 +38,33 @@ class TaskCubit extends Cubit<TaskState> {
   Future<void> addTask(Task task) async {
     if (!_initialized || state is! TaskLoaded) return;
     if (state is TaskLoaded) {
-      final updatedTasks = List<Task>.from((state as TaskLoaded).tasks)
-        ..add(task);
-      emit(TaskLoaded(updatedTasks));
-      await _taskBox.put(task.id, task);
+      try {
+        await _taskBox.put(task.id, task);
+        _emitTasksFromBox();
+      } catch (e) {
+        emit(
+          TaskError("Não foi possível adicionar a tarefa. Tente novamente."),
+        );
+      }
     }
   }
 
   Future<void> markTaskAsDone(String taskId) async {
     if (state is! TaskLoaded) return;
     final currentTasks = (state as TaskLoaded).tasks;
-    final updatedTasks = currentTasks.map((task) {
-      if (task.id == taskId) {
-        final updatedTask = task.copyWith(lastDone: DateTime.now());
-        _taskBox.put(updatedTask.id, updatedTask);
-        return updatedTask;
-      }
-      return task;
-    }).toList();
-
-    updatedTasks.sort((a, b) => a.nextDueDate.compareTo(b.nextDueDate));
-    emit(TaskLoaded(updatedTasks));
+    try {
+      final updatedTask = currentTasks
+          .firstWhere((task) => task.id == taskId)
+          .copyWith(lastDone: DateTime.now());
+      await _taskBox.put(updatedTask.id, updatedTask);
+      _emitTasksFromBox();
+    } catch (e) {
+      emit(
+        TaskError(
+          "Não foi possível marcar a tarefa como concluída. Tente novamente.",
+        ),
+      );
+    }
   }
 
   Future<void> deleteTask(Task task) async {
